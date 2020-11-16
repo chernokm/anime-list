@@ -1,0 +1,58 @@
+.anime {
+    padding: 1rem;
+    width: 300px;
+    min-height: 175px;
+    background-color: #fff;
+    color: #151116;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .anime__button {
+    display: block;
+    padding: 0.25rem;
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;
+    color: #151116;
+    transition: all 0.15s;
+    outline: none;
+  }
+  
+  .anime__button:disabled {
+    opacity: 0.6;
+  }
+  
+  .anime__button:focus {
+    color: white;
+    background-color: #151116;
+  }
+  
+  .anime__button:hover {
+    color: white;
+    background-color: #151116;
+  }
+  
+  .anime__button:active {
+    color: white;
+    background-color: #151116;
+  }
+  
+  .anime__button svg {
+    font-size: 1.25rem;
+  }
+  
+  .anime > * {
+    margin-bottom: 0.25rem;
+  }
+  
+  .anime__title {
+    font-weight: bold;
+  }
+  
+  .anime__year {
+    font-style: italic;
+  }

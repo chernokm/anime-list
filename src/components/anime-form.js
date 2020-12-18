@@ -11,6 +11,7 @@ function AnimeForm(props) {
     if (initialState.description === undefined) initialState.description = "";
     if (initialState.genre === undefined) initialState.genre = "";
     if (initialState.platform === undefined) initialState.platform = "";
+    if (initialState.currentlyWatching === undefined) initialState.currentlyWatching = "";
 
     const [title, setTitle] = useState(initialState.title);
     const [rating, setRating] = useState(initialState.rating);
@@ -18,6 +19,7 @@ function AnimeForm(props) {
     const [description, setDescription] = useState(initialState.description);
     const [genre, setGenre] = useState(initialState.genre);
     const [platform, setPlatform] = useState(initialState.platform);
+    const [currentlyWatching, setCurrentlyWatching] = useState(initialState.currentlyWatching);
     const [errorMessage, setErrorMessage] = useState("");
 
     const onTitleChange = (event) => {
@@ -39,9 +41,13 @@ function AnimeForm(props) {
         setPlatform(event.target.value);
     };
 
+    const onCurrentlyWatchingChange = (event) => {
+        setCurrentlyWatching(event.target.value);
+    };
+
     const onAnimeSubmit = async (event) => {
         event.preventDefault();
-        onSubmit(title, rating, dateAired, description, genre, platform)
+        onSubmit(title, rating, dateAired, description, genre, platform, currentlyWatching)
     };
 
     return (
@@ -53,7 +59,7 @@ function AnimeForm(props) {
                 <label className="anime-form__label">Movie Title:</label>
                 <input className="anime-form__input" type="text" value={title} onChange={onTitleChange} />
                 <label className="anime-form__label">Rating:</label>
-                <input className="anime-form__input" type="number" value={rating} onChange={onRatingChange} />
+                <input className="anime-form__input" type="number" value={rating} min="1" max="5" onChange={onRatingChange} />
                 <label className="anime-form__label">Year Aired:</label>
                 <input className="anime-form__imput" type="number" value={dateAired} onChange={onDateAiredChange} />
                 <label className="anime-form__label">Description:</label>
@@ -62,7 +68,10 @@ function AnimeForm(props) {
                 <input className="anime-form__input" type="text" value={genre} onChange={onGenreChange} />
                 <label className="anime-form__label">Platform:</label>
                 <input className="anime-form__input" type="text" value={platform} onChange={onPlatformChange} />
+                <label className="anime-form__label">Progress:</label>
+                <input className="anime-form__input" type="text" value={currentlyWatching} onChange={onCurrentlyWatchingChange} />
                 <input className="anime-form__submit" type="submit" value={isSaving ? "Saving..." : "Save"} />
+
             </fieldset>
         </form>
     );

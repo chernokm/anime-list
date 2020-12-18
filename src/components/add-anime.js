@@ -1,32 +1,18 @@
 import React from "react";
 import { useState } from "react";
 import { animeCollection } from "../data/firebase";
+import useSaveAnime from "../hooks/use-save-anime";
 import "./add-anime.css";
 import AnimeForm from "./anime-form";
 
-function AddAnime() {
-    const [isSaving, setIsSaving] = useState(false);
-    const [formMessage, setFormMessage] = useState("");
+function AddAnime(props) {
 
-    const onAnimeSubmit = async (title, rating, dateAired, description, genre, platform) => {
-        setIsSaving(true);
+    const userId = props.user.uid;
+    const [save, isSaving, formMessage] = useSaveAnime();
 
-        try {
-            await animeCollection.add({
-                title,
-                rating,
-                dateAired,
-                description,
-                genre,
-                platform,
-            });
-            setFormMessage("Saved successfully")
-            console.log("saved");
-        } catch (error) {
-            console.error(error);
-            setFormMessage("Something went wrong, please try again")
-        }
-        setIsSaving(false);
+    const onAnimeSubmit = async (title, rating, dateAired, description, genre, platform, currentlyWatching) => {
+        save({ title, rating, dateAired, description, genre, platform, currentlyWatching }, userId);
+
     };
 
     return (

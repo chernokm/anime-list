@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Delete, Edit } from "@material-ui/icons";
 import ErrorMessage from "./error-message";
-import { animeCollection } from "../data/firebase";
+import { usersCollection } from "../data/firebase";
 import { useHistory } from "react-router-dom";
 import "./anime.css";
 
 function Anime(props) {
-    const { id, data } = props;
-    const { title, rating, dateAired, description, genre, platform, review } = data;
+    const { id, data, userId } = props;
+    const { title, rating, dateAired, description, genre, platform, review, currentlyWatching } = data;
 
     const ratingString = "💙".repeat(rating) + "🖤".repeat(5 - rating);
     const history = useHistory();
@@ -18,7 +18,7 @@ function Anime(props) {
         setIsDeleting(true);
         setErrorMessage("");
         try {
-            const docRef = animeCollection.doc(id);
+            const docRef = usersCollection.doc(userId).collection("anime").doc(id);
             await docRef.delete();
         } catch (error) {
             console.error(error);
@@ -37,6 +37,7 @@ function Anime(props) {
                 <div className="anime__genre">{genre}</div>
                 <div className="anime__platform">{platform}</div>
                 <div className="anime__review">{review}</div>
+                <div className="anime__currentlyWatching">{currentlyWatching}</div>
                 {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             </div>
             <div>

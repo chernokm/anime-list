@@ -1,56 +1,22 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { animeCollection } from "../data/firebase";
+import useAnime from "../hooks/use-anime";
+import useSaveAnime from "../hooks/use-save-anime";
 import "./edit-anime.css";
 import ErrorMessage from "./error-message";
 import LoadingSpinner from "./loading-spinner";
 import AnimeForm from "./anime-form";
 
 function EditAnime(props) {
-    const { id } = props;
-    const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [animeData, setAnimeData] = useState(null);
-    const [isSaving, setIsSaving] = useState(false);
-    const [formMessage, setFormMessage] = useState("");
+    const animeId = props.id;
+    const userId = props.user.uid;
 
-    useEffect(() => {
-        async function getAnime() {
-            setIsLoading(true);
-            try {
-                const animeSnapshot = await animeCollection.doc(id).get();
-                if (!animeSnapshot.exists) {
-                    throw new Error("No such anime exists");
-                }
-                const data = animeSnapshot.data();
-                setAnimeData(data);
-            } catch (error) {
-                setErrorMessage("Something went wrong");
-                console.error(error);
-            }
-            setIsLoading(false);
-        }
-        getAnime();
-    }, [id]);
+    const [animeData, isLoading, errorMessage] = useAnime(userId, animeId);
+    const [save, isSaving, formMessage] = useSaveAnime();
 
-    const onAnimeSubmit = async (title, rating, dateAired, description, genre, platform) => {
-        setIsSaving(true);
-        setFormMessage("");
-        try {
-            await animeCollection.doc(id).set({
-                title,
-                rating,
-                dateAired,
-                description,
-                genre,
-                platform,
-            });
-            setFormMessage("Saved!")
-        } catch (error) {
-            setFormMessage("Something went wrong");
-            console.error(error);
-        }
-        setIsSaving(false);
+    const onAnimeSubmit = async (title, rating, dateAired, description, genre, platform, currentlyWatching) => {
+        save({ title, rating, dateAired, description, genre, platform, currentlyWatching }, userId, animeId);
     };
 
     return (

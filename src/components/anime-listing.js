@@ -1,29 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import LoadingSpinner from "./loading-spinner";
 import ErrorMessage from "./error-message";
-import { animeCollection } from "../data/firebase";
+import useAllAnime from "../hooks/use-all-anime";
 import Anime from "./anime";
 import "./anime-listing.css";
 
-function AnimeListing() {
-    const [anime, setAnime] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-
-    useEffect(() => {
-        setIsLoading(true);
-        const onNext = (snapshot) => {
-            setIsLoading(false);
-            const docs = snapshot.docs;
-            setAnime(docs);
-        };
-        const onError = (error) => {
-            setErrorMessage("There was a problem loading your anime ratings. Please try again.");
-            console.error(error);
-        };
-        const unsubscribe = animeCollection.orderBy("rating", "desc").onSnapshot(onNext, onError);
-        return unsubscribe;
-    }, []);
+function AnimeListing(props) {
+    const userId = props.user.uid;
+    const [anime, isLoading, errorMessage] = useAllAnime(userId);
 
     return (
         <div className="anime-container">
@@ -36,7 +20,7 @@ function AnimeListing() {
                     const animeData = animeDoc.data();
                     return (
                         <li key={animeId}>
-                            <Anime id={animeId} data={animeData} />
+                            <Anime id={animeId} data={animeData} userId={userId} />
                         </li>
                     );
                 })}

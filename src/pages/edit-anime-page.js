@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { useParams } from 'react-router-dom'
 import EditAnime from "../components/edit-anime";
 
-function EditAnimePage() {
+function EditAnimePage(props) {
     const { id } = useParams();
     return (
         <main>
@@ -11,7 +11,7 @@ function EditAnimePage() {
                 <title>Edit</title>
 
             </Helmet>
-            <EditAnime id={id} />
+            <EditAnime id={id} {...props} />
         </main>
     );
 }
